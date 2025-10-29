@@ -1,4 +1,6 @@
+import 'package:countercubit/counter/count_barrel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CounterView extends StatelessWidget {
   const CounterView({super.key});
@@ -7,16 +9,28 @@ class CounterView extends StatelessWidget {
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(title: const Text("counter App")),
-      body: Center(child: Text("0")),
+      body: Center(
+        child: BlocBuilder<CounterCubit, int>(
+          builder: (context, state) {
+            return Text(
+              '$state',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            );
+          },
+        ),
+      ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: context.read<CounterCubit>().onDecrement,
             child: const Icon(Icons.remove),
           ),
           const SizedBox(width: 8),
-          FloatingActionButton(onPressed: () {}, child: const Icon(Icons.add)),
+          FloatingActionButton(
+            onPressed: context.read<CounterCubit>().onIncrement,
+            child: const Icon(Icons.add),
+          ),
         ],
       ),
     );
